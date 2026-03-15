@@ -1,6 +1,8 @@
 import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { CoinIcon } from "./CoinIcon";
+import { CoinBuddyMascot } from "./CoinBuddyMascot";
+import { Sparkles } from "./FloatingElements";
 import { Progress } from "@/components/ui/progress";
 import { Expense, UserData } from "@/lib/store";
 
@@ -32,6 +34,13 @@ export function Dashboard({ expenses, userData, userName }: DashboardProps) {
   const progress = Math.min((monthlySpending / userData.budget) * 100, 100);
   const overBudget = monthlySpending > userData.budget;
 
+  const mascotMood = overBudget ? "excited" : userData.streak > 3 ? "celebrating" : "happy";
+  const mascotMsg = overBudget
+    ? "Slow down! 😅"
+    : userData.streak > 3
+    ? `${userData.streak} day streak! 🔥`
+    : `Hi ${userName}! 💕`;
+
   const tips = [
     "Try cooking at home to save on food! 🍳",
     "Track daily to build your streak! 🔥",
@@ -42,32 +51,39 @@ export function Dashboard({ expenses, userData, userName }: DashboardProps) {
 
   return (
     <div className="space-y-4">
-      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}>
-        <h2 className="text-xl font-black text-foreground">Hey {userName}! 👋</h2>
-        <p className="text-muted-foreground text-sm font-semibold">Here&apos;s your spending overview</p>
+      {/* Mascot greeting */}
+      <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="flex items-start gap-3">
+        <CoinBuddyMascot size={64} mood={mascotMood} message={mascotMsg} />
+        <div className="pt-2">
+          <h2 className="text-xl font-black text-foreground">Hey {userName}! 👋</h2>
+          <p className="text-muted-foreground text-sm font-semibold">Here&apos;s your spending overview</p>
+        </div>
       </motion.div>
 
+      {/* Today / Month cards */}
       <div className="grid grid-cols-2 gap-3">
-        <motion.div initial={{ scale: 0.9 }} animate={{ scale: 1 }} className="card-cartoon p-4 bg-sky/20">
-          <p className="text-xs font-bold text-sky-foreground uppercase">Today</p>
+        <motion.div initial={{ scale: 0.9 }} animate={{ scale: 1 }} className="card-glow p-4 relative overflow-hidden">
+          <Sparkles count={3} />
+          <p className="text-xs font-bold text-primary uppercase">Today 💳</p>
           <p className="text-2xl font-black text-foreground">₹{todaySpending.toLocaleString()}</p>
         </motion.div>
-        <motion.div initial={{ scale: 0.9 }} animate={{ scale: 1 }} transition={{ delay: 0.1 }} className="card-cartoon p-4 bg-pink/20">
-          <p className="text-xs font-bold text-pink-foreground uppercase">This Month</p>
+        <motion.div initial={{ scale: 0.9 }} animate={{ scale: 1 }} transition={{ delay: 0.1 }} className="card-glow p-4 relative overflow-hidden">
+          <Sparkles count={3} />
+          <p className="text-xs font-bold text-primary uppercase">This Month 📅</p>
           <p className="text-2xl font-black text-foreground">₹{monthlySpending.toLocaleString()}</p>
         </motion.div>
       </div>
 
       {/* Budget card */}
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="card-cartoon p-4">
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="card-glow p-4">
         <div className="flex justify-between items-center mb-2">
-          <span className="font-bold text-sm text-foreground">Monthly Budget</span>
+          <span className="font-bold text-sm text-foreground">💰 Monthly Budget</span>
           <span className="font-black text-foreground">₹{userData.budget.toLocaleString()}</span>
         </div>
         <Progress value={progress} className="h-3 rounded-full" />
         <div className="flex justify-between mt-2 text-xs font-semibold">
           <span className="text-muted-foreground">Spent: ₹{monthlySpending.toLocaleString()}</span>
-          <span className={overBudget ? "text-destructive" : "text-accent-foreground"}>
+          <span className={overBudget ? "text-destructive" : "text-primary"}>
             {overBudget ? "Over!" : `Remaining: ₹${remaining.toLocaleString()}`}
           </span>
         </div>
@@ -82,22 +98,22 @@ export function Dashboard({ expenses, userData, userName }: DashboardProps) {
       {/* Streak & coins */}
       <div className="grid grid-cols-2 gap-3">
         <div className="card-cartoon p-4 bg-primary/10">
-          <p className="text-xs font-bold uppercase text-muted-foreground">Saving Streak</p>
+          <p className="text-xs font-bold uppercase text-muted-foreground">🔥 Saving Streak</p>
           <p className="text-xl font-black text-foreground">
             {"🔥".repeat(Math.min(userData.streak, 10))} {userData.streak > 0 ? `(${userData.streak} days)` : "Start today!"}
           </p>
         </div>
-        <div className="card-cartoon p-4 bg-coin-gold/10 flex items-center gap-2">
+        <div className="card-cartoon p-4 bg-accent/10 flex items-center gap-2">
           <CoinIcon size={32} />
           <div>
-            <p className="text-xs font-bold uppercase text-muted-foreground">Coins</p>
+            <p className="text-xs font-bold uppercase text-muted-foreground">🪙 Coins</p>
             <p className="text-xl font-black text-foreground">{userData.coins}</p>
           </div>
         </div>
       </div>
 
       {/* Tip */}
-      <div className="card-cartoon p-3 bg-mint/10">
+      <div className="card-cartoon p-3 bg-secondary/30">
         <p className="text-sm font-bold text-foreground">💡 Tip: {tip}</p>
       </div>
     </div>

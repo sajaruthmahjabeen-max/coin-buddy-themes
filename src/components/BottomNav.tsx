@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import { Home, Plus, PieChart, Calendar, ShoppingBag, Settings } from "lucide-react";
 
 export type Tab = "home" | "add" | "list" | "chart" | "calendar" | "more";
@@ -18,20 +19,32 @@ const items: { id: Tab; icon: React.ElementType; label: string }[] = [
 
 export function BottomNav({ active, onChange }: BottomNavProps) {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-card border-t-2 border-border z-50">
+    <nav className="fixed bottom-0 left-0 right-0 bg-card/95 backdrop-blur-md border-t-2 border-border z-50">
       <div className="max-w-md mx-auto flex">
-        {items.map(item => (
-          <button
-            key={item.id}
-            onClick={() => onChange(item.id)}
-            className={`flex-1 flex flex-col items-center py-2 gap-0.5 btn-bounce text-xs font-bold transition-colors ${
-              active === item.id ? "text-primary" : "text-muted-foreground"
-            }`}
-          >
-            <item.icon size={20} />
-            {item.label}
-          </button>
-        ))}
+        {items.map(item => {
+          const isActive = active === item.id;
+          return (
+            <button
+              key={item.id}
+              onClick={() => onChange(item.id)}
+              className={`flex-1 flex flex-col items-center py-2 gap-0.5 btn-bounce text-xs font-bold transition-all duration-200 relative ${
+                isActive ? "text-primary" : "text-muted-foreground"
+              }`}
+            >
+              {isActive && (
+                <motion.div
+                  layoutId="navIndicator"
+                  className="absolute -top-0.5 w-8 h-1 rounded-full bg-primary"
+                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                />
+              )}
+              <motion.div animate={isActive ? { scale: 1.15, y: -2 } : { scale: 1, y: 0 }}>
+                <item.icon size={20} />
+              </motion.div>
+              {item.label}
+            </button>
+          );
+        })}
       </div>
     </nav>
   );

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { CoinIcon } from "./CoinIcon";
+import { CoinBuddyMascot } from "./CoinBuddyMascot";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -24,7 +25,7 @@ export function AddExpenseForm({ onAdd }: AddExpenseFormProps) {
     onAdd(name, parseFloat(amount), category, date);
     setName(""); setAmount(""); setCategory("");
     setShowCoin(true);
-    setTimeout(() => setShowCoin(false), 1000);
+    setTimeout(() => setShowCoin(false), 1500);
   };
 
   return (
@@ -32,19 +33,22 @@ export function AddExpenseForm({ onAdd }: AddExpenseFormProps) {
       <AnimatePresence>
         {showCoin && (
           <motion.div
-            initial={{ opacity: 1, y: 0 }}
-            animate={{ opacity: 0, y: -60 }}
+            initial={{ opacity: 1, y: 0, scale: 1 }}
+            animate={{ opacity: 0, y: -80, scale: 1.3 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.8 }}
-            className="absolute top-0 left-1/2 -translate-x-1/2 z-10"
+            transition={{ duration: 1.2 }}
+            className="absolute top-0 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center"
           >
-            <CoinIcon size={40} animate />
-            <p className="text-sm font-bold text-primary text-center">+5 🪙</p>
+            <CoinBuddyMascot size={48} mood="celebrating" />
+            <div className="flex items-center gap-1 mt-1">
+              <CoinIcon size={24} animate />
+              <p className="text-sm font-black text-primary">+5 coins!</p>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      <form onSubmit={handleSubmit} className="card-cartoon p-4 space-y-3">
+      <form onSubmit={handleSubmit} className="card-glow p-4 space-y-3">
         <h3 className="font-black text-lg text-foreground">Add Expense 💸</h3>
         <div>
           <Label>Expense Name</Label>
@@ -69,7 +73,7 @@ export function AddExpenseForm({ onAdd }: AddExpenseFormProps) {
           <Label>Date</Label>
           <Input type="date" value={date} onChange={e => setDate(e.target.value)} className="mt-1" />
         </div>
-        <Button type="submit" className="w-full btn-bounce font-bold rounded-xl bg-primary text-primary-foreground hover:opacity-90">
+        <Button type="submit" className="w-full btn-bounce btn-sparkle font-bold rounded-2xl text-primary-foreground h-11 hover:opacity-90">
           Add Expense ✅
         </Button>
       </form>

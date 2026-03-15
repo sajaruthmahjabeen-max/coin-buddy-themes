@@ -3,11 +3,11 @@ import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from "recha
 import { Expense, CATEGORIES } from "@/lib/store";
 
 const COLORS = [
-  "hsl(43, 100%, 55%)",
-  "hsl(200, 90%, 75%)",
-  "hsl(330, 80%, 70%)",
-  "hsl(270, 60%, 65%)",
-  "hsl(155, 60%, 70%)",
+  "hsl(330, 100%, 63%)",
+  "hsl(43, 100%, 50%)",
+  "hsl(280, 70%, 65%)",
+  "hsl(200, 80%, 70%)",
+  "hsl(160, 60%, 65%)",
 ];
 
 interface ExpenseChartProps {
@@ -23,7 +23,7 @@ export function ExpenseChart({ expenses }: ExpenseChartProps) {
 
   if (!data.length) {
     return (
-      <div className="card-cartoon p-6 text-center">
+      <div className="card-glow p-6 text-center">
         <p className="text-4xl mb-2">📊</p>
         <p className="font-bold text-muted-foreground">Add expenses to see your chart!</p>
       </div>
@@ -31,7 +31,7 @@ export function ExpenseChart({ expenses }: ExpenseChartProps) {
   }
 
   return (
-    <div className="card-cartoon p-4">
+    <div className="card-glow p-4">
       <h3 className="font-black text-lg text-foreground mb-2">Spending by Category 📊</h3>
       <ResponsiveContainer width="100%" height={250}>
         <PieChart>

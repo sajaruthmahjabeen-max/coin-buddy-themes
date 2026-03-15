@@ -12,6 +12,7 @@ import { ThemeStore } from "@/components/ThemeStore";
 import { BudgetSetter } from "@/components/BudgetSetter";
 import { BottomNav, Tab } from "@/components/BottomNav";
 import { CoinIcon } from "@/components/CoinIcon";
+import { CoinBuddyMascot } from "@/components/CoinBuddyMascot";
 import { Moon, Sun, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -41,13 +42,17 @@ const Index = () => {
   useEffect(() => {
     const root = document.documentElement;
     root.classList.toggle("dark", dark);
-    // Remove all theme classes
     THEMES.forEach(t => { if (t.className) root.classList.remove(t.className); });
     const theme = THEMES.find(t => t.id === userData.activeTheme);
     if (theme?.className) root.classList.add(theme.className);
   }, [dark, userData.activeTheme]);
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center bg-background"><CoinIcon size={48} animate /></div>;
+  if (loading) return (
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-pink-soft gap-3">
+      <CoinBuddyMascot size={80} mood="waving" />
+      <p className="font-black text-foreground animate-pulse">Loading...</p>
+    </div>
+  );
 
   if (!user) {
     if (authView === "signup") return <Signup onSignup={signup} onSwitchToLogin={() => setAuthView("login")} />;
@@ -93,7 +98,6 @@ const Index = () => {
     refreshData();
   };
 
-  // Check if under budget → award coins
   const currentMonth = new Date().getMonth();
   const currentYear = new Date().getFullYear();
   const monthlySpending = expenses
@@ -102,19 +106,19 @@ const Index = () => {
   const underBudget = monthlySpending <= userData.budget;
 
   return (
-    <div className="min-h-screen bg-background pb-20">
+    <div className="min-h-screen bg-gradient-pink-soft pb-20">
       {/* Header */}
-      <header className="sticky top-0 z-40 bg-card/80 backdrop-blur border-b-2 border-border">
+      <header className="sticky top-0 z-40 bg-card/80 backdrop-blur-md border-b-2 border-border">
         <div className="max-w-md mx-auto flex items-center justify-between px-4 py-3">
           <div className="flex items-center gap-2">
             <CoinIcon size={28} />
             <span className="font-black text-lg text-foreground">CoinBuddy</span>
           </div>
           <div className="flex items-center gap-1">
-            <Button variant="ghost" size="icon" onClick={() => setDark(!dark)} className="text-foreground">
+            <Button variant="ghost" size="icon" onClick={() => setDark(!dark)} className="text-foreground rounded-full">
               {dark ? <Sun size={18} /> : <Moon size={18} />}
             </Button>
-            <Button variant="ghost" size="icon" onClick={logout} className="text-muted-foreground">
+            <Button variant="ghost" size="icon" onClick={logout} className="text-muted-foreground rounded-full">
               <LogOut size={18} />
             </Button>
           </div>
@@ -133,8 +137,8 @@ const Index = () => {
             <Achievements userData={userData} />
             <ThemeStore userData={userData} onBuyTheme={handleBuyTheme} onApplyTheme={handleApplyTheme} />
             {underBudget && userData.streak > 0 && (
-              <div className="card-cartoon p-3 bg-accent/20 text-center">
-                <p className="font-bold text-accent-foreground">🎉 You&apos;re under budget! Keep it up for bonus coins!</p>
+              <div className="card-glow p-3 text-center">
+                <p className="font-bold text-primary">🎉 You&apos;re under budget! Keep it up for bonus coins!</p>
               </div>
             )}
           </div>

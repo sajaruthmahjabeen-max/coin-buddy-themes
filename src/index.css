@@ -6,46 +6,52 @@
 
 @layer base {
   :root {
-    --background: 45 100% 97%;
-    --foreground: 270 30% 20%;
+    --background: 330 60% 97%;
+    --foreground: 330 30% 15%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 270 30% 20%;
+    --card: 330 40% 99%;
+    --card-foreground: 330 30% 15%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 270 30% 20%;
+    --popover: 330 40% 99%;
+    --popover-foreground: 330 30% 15%;
 
-    --primary: 43 100% 55%;
-    --primary-foreground: 270 30% 15%;
+    --primary: 330 100% 63%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 200 90% 75%;
-    --secondary-foreground: 200 80% 20%;
+    --secondary: 330 60% 88%;
+    --secondary-foreground: 330 50% 25%;
 
-    --muted: 45 30% 92%;
-    --muted-foreground: 270 10% 45%;
+    --muted: 330 30% 93%;
+    --muted-foreground: 330 15% 45%;
 
-    --accent: 155 60% 70%;
-    --accent-foreground: 155 60% 15%;
+    --accent: 43 100% 50%;
+    --accent-foreground: 43 100% 15%;
 
     --destructive: 0 80% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 270 20% 88%;
-    --input: 270 20% 88%;
-    --ring: 43 100% 55%;
+    --border: 330 30% 88%;
+    --input: 330 30% 88%;
+    --ring: 330 100% 63%;
 
     --radius: 1rem;
 
-    --coin-gold: 43 100% 55%;
-    --coin-glow: 43 100% 70%;
-    --pink: 330 80% 70%;
-    --pink-foreground: 330 80% 20%;
-    --purple: 270 60% 65%;
-    --purple-foreground: 270 60% 15%;
-    --mint: 155 60% 70%;
-    --mint-foreground: 155 60% 15%;
-    --sky: 200 90% 75%;
-    --sky-foreground: 200 80% 20%;
+    --coin-gold: 43 100% 50%;
+    --coin-glow: 43 100% 65%;
+    --pink: 330 100% 63%;
+    --pink-foreground: 0 0% 100%;
+    --purple: 280 70% 65%;
+    --purple-foreground: 280 60% 15%;
+    --mint: 160 60% 65%;
+    --mint-foreground: 160 60% 15%;
+    --sky: 200 80% 70%;
+    --sky-foreground: 200 70% 20%;
+
+    --gradient-pink: linear-gradient(135deg, hsl(330, 100%, 63%), hsl(340, 90%, 72%));
+    --gradient-pink-soft: linear-gradient(135deg, hsl(330, 60%, 95%), hsl(340, 50%, 97%));
+    --gradient-gold: linear-gradient(135deg, hsl(43, 100%, 50%), hsl(35, 100%, 60%));
+    --glow-pink: 0 0 20px hsl(330 100% 63% / 0.3);
+    --glow-gold: 0 0 15px hsl(43 100% 50% / 0.4);
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -60,44 +66,50 @@
   }
 
   .dark {
-    --background: 260 25% 10%;
-    --foreground: 45 30% 90%;
+    --background: 300 20% 8%;
+    --foreground: 330 30% 92%;
 
-    --card: 260 25% 14%;
-    --card-foreground: 45 30% 90%;
+    --card: 300 20% 12%;
+    --card-foreground: 330 30% 92%;
 
-    --popover: 260 25% 14%;
-    --popover-foreground: 45 30% 90%;
+    --popover: 300 20% 12%;
+    --popover-foreground: 330 30% 92%;
 
-    --primary: 43 100% 55%;
-    --primary-foreground: 260 25% 10%;
+    --primary: 330 100% 63%;
+    --primary-foreground: 0 0% 100%;
 
-    --secondary: 200 60% 40%;
-    --secondary-foreground: 200 90% 90%;
+    --secondary: 330 40% 25%;
+    --secondary-foreground: 330 60% 90%;
 
-    --muted: 260 20% 18%;
-    --muted-foreground: 45 10% 60%;
+    --muted: 300 15% 16%;
+    --muted-foreground: 330 15% 60%;
 
-    --accent: 155 40% 35%;
-    --accent-foreground: 155 60% 90%;
+    --accent: 43 100% 50%;
+    --accent-foreground: 43 100% 90%;
 
     --destructive: 0 70% 45%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 260 20% 22%;
-    --input: 260 20% 22%;
-    --ring: 43 100% 55%;
+    --border: 300 15% 20%;
+    --input: 300 15% 20%;
+    --ring: 330 100% 63%;
 
-    --coin-gold: 43 100% 55%;
+    --coin-gold: 43 100% 50%;
     --coin-glow: 43 80% 40%;
-    --pink: 330 60% 50%;
-    --pink-foreground: 330 80% 90%;
-    --purple: 270 50% 50%;
-    --purple-foreground: 270 60% 90%;
-    --mint: 155 40% 40%;
-    --mint-foreground: 155 60% 90%;
+    --pink: 330 80% 55%;
+    --pink-foreground: 330 80% 95%;
+    --purple: 280 50% 50%;
+    --purple-foreground: 280 60% 90%;
+    --mint: 160 40% 40%;
+    --mint-foreground: 160 60% 90%;
     --sky: 200 60% 45%;
     --sky-foreground: 200 90% 90%;
+
+    --gradient-pink: linear-gradient(135deg, hsl(330, 80%, 45%), hsl(340, 70%, 35%));
+    --gradient-pink-soft: linear-gradient(135deg, hsl(300, 20%, 10%), hsl(320, 15%, 14%));
+    --gradient-gold: linear-gradient(135deg, hsl(43, 100%, 45%), hsl(35, 90%, 35%));
+    --glow-pink: 0 0 25px hsl(330 100% 55% / 0.25);
+    --glow-gold: 0 0 15px hsl(43 100% 50% / 0.3);
   }
 
   /* Theme overrides */
@@ -177,16 +189,69 @@
 
 @layer utilities {
   .coin-shadow {
-    box-shadow: 0 4px 15px hsl(var(--coin-gold) / 0.3);
+    box-shadow: var(--glow-gold);
   }
   .card-cartoon {
-    @apply rounded-2xl border-2 border-border bg-card shadow-lg;
-    box-shadow: 0 6px 20px hsl(var(--foreground) / 0.08), 0 2px 6px hsl(var(--foreground) / 0.04);
+    @apply rounded-2xl border-2 border-border bg-card;
+    box-shadow: 0 6px 24px hsl(var(--pink) / 0.1), 0 2px 8px hsl(var(--foreground) / 0.05);
+  }
+  .card-glow {
+    @apply card-cartoon;
+    box-shadow: var(--glow-pink), 0 6px 24px hsl(var(--pink) / 0.15);
   }
   .btn-bounce {
     @apply transition-transform duration-200;
   }
   .btn-bounce:active {
     transform: scale(0.95);
+  }
+  .btn-sparkle {
+    @apply relative overflow-hidden;
+    background: var(--gradient-pink);
+  }
+  .btn-sparkle::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      45deg,
+      transparent 40%,
+      hsl(0 0% 100% / 0.15) 45%,
+      hsl(0 0% 100% / 0.25) 50%,
+      hsl(0 0% 100% / 0.15) 55%,
+      transparent 60%
+    );
+    animation: sparkle-sweep 3s ease-in-out infinite;
+  }
+  .bg-gradient-pink {
+    background: var(--gradient-pink);
+  }
+  .bg-gradient-pink-soft {
+    background: var(--gradient-pink-soft);
+  }
+  .bg-gradient-gold {
+    background: var(--gradient-gold);
+  }
+
+  @keyframes sparkle-sweep {
+    0% { transform: translateX(-100%) rotate(0deg); }
+    100% { transform: translateX(100%) rotate(0deg); }
+  }
+
+  @keyframes sparkle-float {
+    0%, 100% { opacity: 0; transform: translateY(0) scale(0.5); }
+    50% { opacity: 1; transform: translateY(-10px) scale(1); }
+  }
+
+  @keyframes gentle-pulse {
+    0%, 100% { box-shadow: var(--glow-pink); }
+    50% { box-shadow: 0 0 30px hsl(330 100% 63% / 0.5); }
+  }
+
+  .glow-pulse {
+    animation: gentle-pulse 2s ease-in-out infinite;
   }
 }
