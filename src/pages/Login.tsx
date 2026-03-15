@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { CoinIcon } from "@/components/CoinIcon";
+import { CoinBuddyMascot } from "@/components/CoinBuddyMascot";
+import { FloatingCoins } from "@/components/FloatingElements";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -22,21 +23,20 @@ export default function Login({ onLogin, onSwitchToSignup }: LoginProps) {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-4">
+    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-gradient-pink-soft">
+      <FloatingCoins />
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-sm"
+        className="w-full max-w-sm relative z-10"
       >
-        <div className="text-center mb-8">
-          <motion.div animate={{ y: [0, -8, 0] }} transition={{ repeat: Infinity, duration: 2 }} className="inline-block">
-            <CoinIcon size={64} />
-          </motion.div>
-          <h1 className="text-3xl font-black mt-4 text-foreground">CoinBuddy</h1>
-          <p className="text-muted-foreground font-semibold">Your friendly money tracker 🪙</p>
+        <div className="text-center mb-6">
+          <CoinBuddyMascot size={80} mood="waving" message="Welcome back! 💕" />
+          <h1 className="text-3xl font-black mt-3 text-foreground">CoinBuddy</h1>
+          <p className="text-muted-foreground font-semibold">Your friendly money tracker 💖</p>
         </div>
 
-        <form onSubmit={handleSubmit} className="card-cartoon p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="card-glow p-6 space-y-4">
           <div>
             <Label htmlFor="email">Email</Label>
             <Input id="email" type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="you@email.com" required className="mt-1" />
@@ -46,7 +46,7 @@ export default function Login({ onLogin, onSwitchToSignup }: LoginProps) {
             <Input id="password" type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••" required className="mt-1" />
           </div>
           {error && <p className="text-destructive text-sm font-semibold">{error}</p>}
-          <Button type="submit" className="w-full btn-bounce font-bold text-lg rounded-xl bg-primary text-primary-foreground hover:opacity-90">
+          <Button type="submit" className="w-full btn-bounce btn-sparkle font-bold text-lg rounded-2xl text-primary-foreground h-12 hover:opacity-90">
             Login 🚀
           </Button>
           <p className="text-center text-sm text-muted-foreground">

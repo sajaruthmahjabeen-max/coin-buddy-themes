@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { CoinIcon } from "@/components/CoinIcon";
+import { CoinBuddyMascot } from "@/components/CoinBuddyMascot";
+import { FloatingCoins } from "@/components/FloatingElements";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -26,13 +27,14 @@ export default function Signup({ onSignup, onSwitchToLogin }: SignupProps) {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-4">
-      <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-sm">
-        <div className="text-center mb-6">
-          <CoinIcon size={48} />
+    <div className="min-h-screen flex items-center justify-center p-4 relative overflow-hidden bg-gradient-pink-soft">
+      <FloatingCoins />
+      <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} className="w-full max-w-sm relative z-10">
+        <div className="text-center mb-4">
+          <CoinBuddyMascot size={64} mood="excited" message="Let's go! 🎉" />
           <h1 className="text-2xl font-black mt-2 text-foreground">Join CoinBuddy!</h1>
         </div>
-        <form onSubmit={handleSubmit} className="card-cartoon p-6 space-y-4">
+        <form onSubmit={handleSubmit} className="card-glow p-6 space-y-4">
           <div>
             <Label htmlFor="name">Name</Label>
             <Input id="name" value={name} onChange={e => setName(e.target.value)} placeholder="Your name" required className="mt-1" />
@@ -50,7 +52,7 @@ export default function Signup({ onSignup, onSwitchToLogin }: SignupProps) {
             <Input id="cpw" type="password" value={confirm} onChange={e => setConfirm(e.target.value)} placeholder="••••••••" required className="mt-1" />
           </div>
           {error && <p className="text-destructive text-sm font-semibold">{error}</p>}
-          <Button type="submit" className="w-full btn-bounce font-bold text-lg rounded-xl bg-primary text-primary-foreground hover:opacity-90">
+          <Button type="submit" className="w-full btn-bounce btn-sparkle font-bold text-lg rounded-2xl text-primary-foreground h-12 hover:opacity-90">
             Create Account ✨
           </Button>
           <p className="text-center text-sm text-muted-foreground">
