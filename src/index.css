@@ -2,95 +2,166 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 45 100% 97%;
+    --foreground: 270 30% 20%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 270 30% 20%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 270 30% 20%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 43 100% 55%;
+    --primary-foreground: 270 30% 15%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 200 90% 75%;
+    --secondary-foreground: 200 80% 20%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 45 30% 92%;
+    --muted-foreground: 270 10% 45%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 155 60% 70%;
+    --accent-foreground: 155 60% 15%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 80% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --border: 270 20% 88%;
+    --input: 270 20% 88%;
+    --ring: 43 100% 55%;
 
-    --radius: 0.5rem;
+    --radius: 1rem;
+
+    --coin-gold: 43 100% 55%;
+    --coin-glow: 43 100% 70%;
+    --pink: 330 80% 70%;
+    --pink-foreground: 330 80% 20%;
+    --purple: 270 60% 65%;
+    --purple-foreground: 270 60% 15%;
+    --mint: 155 60% 70%;
+    --mint-foreground: 155 60% 15%;
+    --sky: 200 90% 75%;
+    --sky-foreground: 200 80% 20%;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    font-family: 'Nunito', sans-serif;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: 260 25% 10%;
+    --foreground: 45 30% 90%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 260 25% 14%;
+    --card-foreground: 45 30% 90%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 260 25% 14%;
+    --popover-foreground: 45 30% 90%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 43 100% 55%;
+    --primary-foreground: 260 25% 10%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 200 60% 40%;
+    --secondary-foreground: 200 90% 90%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 260 20% 18%;
+    --muted-foreground: 45 10% 60%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 155 40% 35%;
+    --accent-foreground: 155 60% 90%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 70% 45%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --border: 260 20% 22%;
+    --input: 260 20% 22%;
+    --ring: 43 100% 55%;
+
+    --coin-gold: 43 100% 55%;
+    --coin-glow: 43 80% 40%;
+    --pink: 330 60% 50%;
+    --pink-foreground: 330 80% 90%;
+    --purple: 270 50% 50%;
+    --purple-foreground: 270 60% 90%;
+    --mint: 155 40% 40%;
+    --mint-foreground: 155 60% 90%;
+    --sky: 200 60% 45%;
+    --sky-foreground: 200 90% 90%;
+  }
+
+  /* Theme overrides */
+  .theme-rainbow {
+    --primary: 0 85% 60%;
+    --secondary: 40 90% 65%;
+    --accent: 120 60% 55%;
+    --pink: 300 70% 60%;
+    --purple: 270 70% 60%;
+    --sky: 200 80% 65%;
+    --background: 50 100% 97%;
+  }
+  .theme-neon-dark {
+    --background: 240 30% 8%;
+    --foreground: 120 100% 70%;
+    --card: 240 30% 12%;
+    --card-foreground: 120 100% 70%;
+    --primary: 300 100% 60%;
+    --primary-foreground: 240 30% 8%;
+    --secondary: 180 100% 50%;
+    --accent: 120 100% 50%;
+    --border: 240 30% 20%;
+    --input: 240 30% 20%;
+    --muted: 240 20% 16%;
+    --muted-foreground: 120 40% 50%;
+    --pink: 300 100% 60%;
+    --purple: 270 100% 65%;
+    --sky: 180 100% 50%;
+    --mint: 120 100% 50%;
+  }
+  .theme-candy {
+    --primary: 330 85% 65%;
+    --secondary: 280 70% 70%;
+    --accent: 180 60% 65%;
+    --background: 330 60% 96%;
+    --card: 0 0% 100%;
+    --pink: 330 85% 65%;
+    --purple: 280 70% 70%;
+    --mint: 160 60% 70%;
+    --sky: 200 70% 75%;
+  }
+  .theme-nature {
+    --primary: 120 50% 45%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 80 50% 55%;
+    --accent: 35 70% 55%;
+    --background: 80 30% 95%;
+    --card: 80 20% 98%;
+    --pink: 350 50% 60%;
+    --purple: 270 40% 55%;
+    --mint: 150 50% 55%;
+    --sky: 190 50% 60%;
+  }
+  .theme-ocean {
+    --primary: 200 80% 50%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 180 60% 50%;
+    --accent: 160 50% 55%;
+    --background: 200 40% 95%;
+    --card: 200 30% 98%;
+    --pink: 340 50% 60%;
+    --purple: 250 50% 60%;
+    --mint: 170 50% 55%;
+    --sky: 200 80% 55%;
   }
 }
 
@@ -98,8 +169,24 @@ All colors MUST be HSL.
   * {
     @apply border-border;
   }
-
   body {
     @apply bg-background text-foreground;
+    font-family: 'Nunito', sans-serif;
+  }
+}
+
+@layer utilities {
+  .coin-shadow {
+    box-shadow: 0 4px 15px hsl(var(--coin-gold) / 0.3);
+  }
+  .card-cartoon {
+    @apply rounded-2xl border-2 border-border bg-card shadow-lg;
+    box-shadow: 0 6px 20px hsl(var(--foreground) / 0.08), 0 2px 6px hsl(var(--foreground) / 0.04);
+  }
+  .btn-bounce {
+    @apply transition-transform duration-200;
+  }
+  .btn-bounce:active {
+    transform: scale(0.95);
   }
 }
