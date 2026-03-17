@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button";
 import {
   getExpenses, addExpense, deleteExpense,
   getUserData, setUserData, awardCoins, updateStreak, checkAchievements,
-  THEMES, type UserData
+  THEMES, type UserData, type Expense
 } from "@/lib/store";
 import { toast } from "sonner";
 
@@ -26,14 +26,27 @@ const Index = () => {
   const { user, loading, login, signup, logout } = useAuth();
   const [authView, setAuthView] = useState<"login" | "signup">("login");
   const [tab, setTab] = useState<Tab>("home");
-  const [expenses, setExpenses] = useState<ReturnType<typeof getExpenses>>([]);
-  const [userData, setUD] = useState<UserData>({ budget: 10000, coins: 0, streak: 0, lastTrackDate: "", achievements: [], unlockedThemes: ["default"], activeTheme: "default" });
+  const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [userData, setUD] = useState<UserData>({ 
+    id: "",
+    budget: 10000, 
+    coins: 0, 
+    streak: 0, 
+    last_track_date: "", 
+    achievements: [], 
+    unlocked_themes: ["default"], 
+    active_theme: "default" 
+  });
   const [dark, setDark] = useState(false);
 
-  const refreshData = useCallback(() => {
+  const refreshData = useCallback(async () => {
     if (!user) return;
-    setExpenses(getExpenses(user.id));
-    setUD(getUserData(user.id));
+    const [fetchedExpenses, fetchedUserData] = await Promise.all([
+      getExpenses(user.id),
+      getUserData(user.id)
+    ]);
+    setExpenses(fetchedExpenses);
+    setUD(fetchedUserData);
   }, [user]);
 
   useEffect(() => { refreshData(); }, [refreshData]);
@@ -43,9 +56,9 @@ const Index = () => {
     const root = document.documentElement;
     root.classList.toggle("dark", dark);
     THEMES.forEach(t => { if (t.className) root.classList.remove(t.className); });
-    const theme = THEMES.find(t => t.id === userData.activeTheme);
+    const theme = THEMES.find(t => t.id === userData.active_theme);
     if (theme?.className) root.classList.add(theme.className);
-  }, [dark, userData.activeTheme]);
+  }, [dark, userData.active_theme]);
 
   if (loading) return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-pink-soft gap-3">
@@ -59,42 +72,40 @@ const Index = () => {
     return <Login onLogin={login} onSwitchToSignup={() => setAuthView("signup")} />;
   }
 
-  const handleAddExpense = (name: string, amount: number, category: string, date: string) => {
-    addExpense({ userId: user.id, name, amount, category, date });
-    awardCoins(user.id, 5);
-    updateStreak(user.id);
-    const newAch = checkAchievements(user.id);
+  const handleAddExpense = async (name: string, amount: number, category: string, date: string) => {
+    await addExpense({ user_id: user.id, name, amount, category, date });
+    await awardCoins(user.id, 5);
+    await updateStreak(user.id);
+    const newAch = await checkAchievements(user.id);
     newAch.forEach(a => toast.success(`Achievement unlocked: ${a}`));
     refreshData();
     toast.success("Expense added! +5 coins 🪙");
   };
 
-  const handleDeleteExpense = (id: string) => {
-    deleteExpense(id);
+  const handleDeleteExpense = async (id: string) => {
+    await deleteExpense(id);
     refreshData();
   };
 
-  const handleSetBudget = (budget: number) => {
-    const d = getUserData(user.id);
-    d.budget = budget;
-    setUserData(user.id, d);
+  const handleSetBudget = async (budget: number) => {
+    await setUserData(user.id, { budget });
     refreshData();
     toast.success("Budget updated! 🎯");
   };
 
-  const handleBuyTheme = (themeId: string, cost: number) => {
-    const d = getUserData(user.id);
-    d.coins -= cost;
-    d.unlockedThemes.push(themeId);
-    setUserData(user.id, d);
+  const handleBuyTheme = async (themeId: string, cost: number) => {
+    const d = await getUserData(user.id);
+    const unlocked = [...d.unlocked_themes, themeId];
+    await setUserData(user.id, { 
+      coins: d.coins - cost, 
+      unlocked_themes: unlocked 
+    });
     refreshData();
     toast.success("Theme unlocked! 🎨");
   };
 
-  const handleApplyTheme = (themeId: string) => {
-    const d = getUserData(user.id);
-    d.activeTheme = themeId;
-    setUserData(user.id, d);
+  const handleApplyTheme = async (themeId: string) => {
+    await setUserData(user.id, { active_theme: themeId });
     refreshData();
   };
 

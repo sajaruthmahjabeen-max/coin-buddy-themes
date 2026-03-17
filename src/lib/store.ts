@@ -1,15 +1,14 @@
-// Simple localStorage-based store for CoinBuddy
+import { supabase } from "./supabase";
 
 export interface User {
   id: string;
   name: string;
   email: string;
-  password: string;
 }
 
 export interface Expense {
   id: string;
-  userId: string;
+  user_id: string;
   name: string;
   amount: number;
   category: string;
@@ -17,110 +16,131 @@ export interface Expense {
 }
 
 export interface UserData {
+  id: string;
   budget: number;
   coins: number;
   streak: number;
-  lastTrackDate: string;
+  last_track_date: string;
   achievements: string[];
-  unlockedThemes: string[];
-  activeTheme: string;
+  unlocked_themes: string[];
+  active_theme: string;
 }
 
-const USERS_KEY = "coinbuddy_users";
-const EXPENSES_KEY = "coinbuddy_expenses";
-const CURRENT_USER_KEY = "coinbuddy_current_user";
-const USERDATA_KEY = "coinbuddy_userdata";
+// User data (Profiles)
+export async function getUserData(userId: string): Promise<UserData> {
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', userId)
+    .single();
 
-function getItem<T>(key: string, fallback: T): T {
-  try {
-    const v = localStorage.getItem(key);
-    return v ? JSON.parse(v) : fallback;
-  } catch { return fallback; }
-}
-function setItem(key: string, value: unknown) {
-  localStorage.setItem(key, JSON.stringify(value));
+  if (error || !data) {
+    const defaultData = {
+      id: userId,
+      budget: 10000,
+      coins: 0,
+      streak: 0,
+      last_track_date: "",
+      achievements: [],
+      unlocked_themes: ["default"],
+      active_theme: "default"
+    };
+    
+    // Create profile if it doesn't exist
+    const { data: newData, error: insertError } = await supabase
+      .from('profiles')
+      .upsert(defaultData)
+      .select()
+      .single();
+
+    if (insertError) {
+      console.error("Error creating profile:", insertError);
+      return defaultData;
+    }
+    return (newData || defaultData) as UserData;
+  }
+  return data as UserData;
 }
 
-// Auth
-export function getUsers(): User[] { return getItem(USERS_KEY, []); }
-export function signup(name: string, email: string, password: string): User | string {
-  const users = getUsers();
-  if (users.find(u => u.email === email)) return "Email already registered";
-  const user: User = { id: crypto.randomUUID(), name, email, password };
-  users.push(user);
-  setItem(USERS_KEY, users);
-  setItem(`${USERDATA_KEY}_${user.id}`, { budget: 10000, coins: 0, streak: 0, lastTrackDate: "", achievements: [], unlockedThemes: ["default"], activeTheme: "default" } as UserData);
-  return user;
-}
-export function login(email: string, password: string): User | string {
-  const user = getUsers().find(u => u.email === email && u.password === password);
-  if (!user) return "Invalid email or password";
-  setItem(CURRENT_USER_KEY, user);
-  return user;
-}
-export function getCurrentUser(): User | null { return getItem(CURRENT_USER_KEY, null); }
-export function logout() { localStorage.removeItem(CURRENT_USER_KEY); }
-
-// User data
-export function getUserData(userId: string): UserData {
-  return getItem(`${USERDATA_KEY}_${userId}`, { budget: 10000, coins: 0, streak: 0, lastTrackDate: "", achievements: [], unlockedThemes: ["default"], activeTheme: "default" });
-}
-export function setUserData(userId: string, data: UserData) {
-  setItem(`${USERDATA_KEY}_${userId}`, data);
+export async function setUserData(userId: string, data: Partial<UserData>) {
+  await supabase
+    .from('profiles')
+    .update(data)
+    .eq('id', userId);
 }
 
 // Expenses
-export function getExpenses(userId: string): Expense[] {
-  return getItem<Expense[]>(EXPENSES_KEY, []).filter(e => e.userId === userId);
-}
-export function addExpense(expense: Omit<Expense, "id">): Expense {
-  const all = getItem<Expense[]>(EXPENSES_KEY, []);
-  const newExp: Expense = { ...expense, id: crypto.randomUUID() };
-  all.push(newExp);
-  setItem(EXPENSES_KEY, all);
-  return newExp;
-}
-export function deleteExpense(id: string) {
-  const all = getItem<Expense[]>(EXPENSES_KEY, []);
-  setItem(EXPENSES_KEY, all.filter(e => e.id !== id));
+export async function getExpenses(userId: string): Promise<Expense[]> {
+  const { data, error } = await supabase
+    .from('expenses')
+    .select('*')
+    .eq('user_id', userId)
+    .order('date', { ascending: false });
+
+  return (data || []) as Expense[];
 }
 
-// Gamification helpers
-export function awardCoins(userId: string, amount: number) {
-  const data = getUserData(userId);
-  data.coins += amount;
-  setUserData(userId, data);
+export async function addExpense(expense: Omit<Expense, "id">): Promise<Expense | null> {
+  const { data, error } = await supabase
+    .from('expenses')
+    .insert([expense])
+    .select()
+    .single();
+
+  return data as Expense;
 }
 
-export function updateStreak(userId: string) {
-  const data = getUserData(userId);
+export async function deleteExpense(id: string) {
+  await supabase
+    .from('expenses')
+    .delete()
+    .eq('id', id);
+}
+
+// Gamification helpers (Now async)
+export async function awardCoins(userId: string, amount: number) {
+  const data = await getUserData(userId);
+  await setUserData(userId, { coins: data.coins + amount });
+}
+
+export async function updateStreak(userId: string) {
+  const data = await getUserData(userId);
   const today = new Date().toISOString().split("T")[0];
   const yesterday = new Date(Date.now() - 86400000).toISOString().split("T")[0];
-  if (data.lastTrackDate === today) return; // already tracked today
-  if (data.lastTrackDate === yesterday) {
-    data.streak += 1;
-  } else {
-    data.streak = 1;
+  
+  if (data.last_track_date === today) return;
+
+  let newStreak = 1;
+  if (data.last_track_date === yesterday) {
+    newStreak = data.streak + 1;
   }
-  data.lastTrackDate = today;
-  setUserData(userId, data);
+
+  await setUserData(userId, { streak: newStreak, last_track_date: today });
 }
 
-export function checkAchievements(userId: string): string[] {
-  const data = getUserData(userId);
+export async function checkAchievements(userId: string): Promise<string[]> {
+  const data = await getUserData(userId);
   const newAchievements: string[] = [];
   const achievementDefs = [
     { id: "smart_saver", name: "Smart Saver 🏅", condition: data.streak >= 3 },
     { id: "budget_master", name: "Budget Master 🏆", condition: data.streak >= 7 },
     { id: "money_champion", name: "Money Champion 👑", condition: data.streak >= 30 },
   ];
+
+  const currentAchievements = [...(data.achievements || [])];
+  let updated = false;
+
   for (const a of achievementDefs) {
-    if (a.condition && !data.achievements.includes(a.id)) {
-      data.achievements.push(a.id);
+    if (a.condition && !currentAchievements.includes(a.id)) {
+      currentAchievements.push(a.id);
       newAchievements.push(a.name);
+      updated = true;
     }
   }
-  if (newAchievements.length) setUserData(userId, data);
+
+  if (updated) {
+    await setUserData(userId, { achievements: currentAchievements });
+  }
   return newAchievements;
 }
 

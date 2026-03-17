@@ -22,8 +22,8 @@ export function ThemeStore({ userData, onBuyTheme, onApplyTheme }: ThemeStorePro
       </div>
       <div className="space-y-2">
         {THEMES.map((theme, i) => {
-          const owned = userData.unlockedThemes.includes(theme.id);
-          const active = userData.activeTheme === theme.id;
+          const owned = userData.unlocked_themes.includes(theme.id);
+          const active = userData.active_theme === theme.id;
           return (
             <motion.div
               key={theme.id}

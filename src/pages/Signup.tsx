@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 interface SignupProps {
-  onSignup: (name: string, email: string, password: string) => string | null;
+  onSignup: (name: string, email: string, password: string) => Promise<string | null>;
   onSwitchToLogin: () => void;
 }
 
@@ -18,11 +18,11 @@ export default function Signup({ onSignup, onSwitchToLogin }: SignupProps) {
   const [confirm, setConfirm] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (password !== confirm) { setError("Passwords don't match"); return; }
     if (password.length < 6) { setError("Password must be at least 6 characters"); return; }
-    const err = onSignup(name, email, password);
+    const err = await onSignup(name, email, password);
     if (err) setError(err);
   };
 
