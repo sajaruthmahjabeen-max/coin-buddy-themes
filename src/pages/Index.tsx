@@ -49,7 +49,15 @@ const Index = () => {
     setUD(fetchedUserData);
   }, [user]);
 
-  useEffect(() => { refreshData(); }, [refreshData]);
+  useEffect(() => { 
+    refreshData();
+    if (user) {
+      checkAchievements(user.id).then(newAch => {
+        newAch.forEach(a => toast.success(`Achievement unlocked: ${a}`));
+        if (newAch.length > 0) refreshData();
+      });
+    }
+  }, [refreshData, user]);
 
   // Apply theme class
   useEffect(() => {
@@ -145,7 +153,7 @@ const Index = () => {
         {tab === "more" && (
           <div className="space-y-4">
             <BudgetSetter currentBudget={userData.budget} onSet={handleSetBudget} />
-            <Achievements userData={userData} />
+            <Achievements userData={userData} expenses={expenses} />
             <ThemeStore userData={userData} onBuyTheme={handleBuyTheme} onApplyTheme={handleApplyTheme} />
             {underBudget && userData.streak > 0 && (
               <div className="card-glow p-3 text-center">

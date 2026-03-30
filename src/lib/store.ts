@@ -120,11 +120,19 @@ export async function updateStreak(userId: string) {
 
 export async function checkAchievements(userId: string): Promise<string[]> {
   const data = await getUserData(userId);
+  const expenses = await getExpenses(userId);
   const newAchievements: string[] = [];
+  
+  const totalSpent = expenses.reduce((sum, e) => sum + e.amount, 0);
+  const categoriesCount = new Set(expenses.map(e => e.category)).size;
+
   const achievementDefs = [
+    { id: "first_expense", name: "First Steps 👣", condition: expenses.length >= 1 },
     { id: "smart_saver", name: "Smart Saver 🏅", condition: data.streak >= 3 },
     { id: "budget_master", name: "Budget Master 🏆", condition: data.streak >= 7 },
     { id: "money_champion", name: "Money Champion 👑", condition: data.streak >= 30 },
+    { id: "big_spender", name: "Big Spender 💸", condition: totalSpent >= 5000 },
+    { id: "category_king", name: "Category King 👑", condition: categoriesCount >= 5 },
   ];
 
   const currentAchievements = [...(data.achievements || [])];
@@ -154,9 +162,9 @@ export const CATEGORIES = [
 
 export const THEMES = [
   { id: "default", name: "Default", cost: 0, className: "" },
-  { id: "rainbow", name: "Rainbow Theme 🌈", cost: 100, className: "theme-rainbow" },
-  { id: "neon-dark", name: "Neon Dark Theme ⚡", cost: 150, className: "theme-neon-dark" },
-  { id: "candy", name: "Candy Theme 🍬", cost: 120, className: "theme-candy" },
-  { id: "nature", name: "Nature Theme 🌿", cost: 80, className: "theme-nature" },
-  { id: "ocean", name: "Ocean Theme 🌊", cost: 100, className: "theme-ocean" },
+  { id: "nature", name: "Nature Theme 🌿", cost: 30, className: "theme-nature" },
+  { id: "ocean", name: "Ocean Theme 🌊", cost: 50, className: "theme-ocean" },
+  { id: "rainbow", name: "Rainbow Theme 🌈", cost: 75, className: "theme-rainbow" },
+  { id: "candy", name: "Candy Theme 🍬", cost: 80, className: "theme-candy" },
+  { id: "neon-dark", name: "Neon Dark Theme ⚡", cost: 100, className: "theme-neon-dark" },
 ];
