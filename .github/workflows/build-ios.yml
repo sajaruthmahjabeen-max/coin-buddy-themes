@@ -27,17 +27,11 @@ jobs:
       - name: Build Web App
         run: npm run build
 
-      - name: DEBUG: List Files
-        run: ls -R ios
-
-      - name: Sync Capacitor
-        run: npx cap sync ios
-
-      - name: Resolve Swift Package Dependencies
+      - name: Cloud-First: Regenerate iOS Platform
         run: |
-          xcodebuild -resolvePackageDependencies \
-                     -project ios/App/App.xcodeproj \
-                     -scheme App
+          rm -rf ios
+          npx cap add ios
+          npx cap sync ios
 
       - name: Build Xcode Project (Unsigned Check)
         run: |
@@ -46,6 +40,7 @@ jobs:
                      -configuration Debug \
                      -destination 'generic/platform=iOS' \
                      -allowProvisioningUpdates \
+                     -resolvePackageDependencies \
                      CODE_SIGNING_ALLOWED=NO \
                      CODE_SIGNING_REQUIRED=NO \
                      clean build
