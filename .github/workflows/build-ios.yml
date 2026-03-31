@@ -27,7 +27,7 @@ jobs:
       - name: Build Web App
         run: npm run build
 
-      - name: Cloud-First: Regenerate iOS Platform
+      - name: "Cloud-First: Regenerate iOS Platform"
         run: |
           rm -rf ios
           npx cap add ios
